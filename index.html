@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A Little Birthday Surprise 💗</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+        rel="stylesheet"
+    />
+
+    <style>
+        /* ---------------------------------
+           1. Global styles and color palette
+        ---------------------------------- */
+        :root {
+            --pink: #ff6f9f;
+            --rose: #ffc1d5;
+            --ink: #33263c;
+            --cream: #fff8f7;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: var(--ink);
+            font-family: "DM Sans", sans-serif;
+            background:
+                radial-gradient(circle at 15% 15%, #ffe0eb 0, transparent 32%),
+                radial-gradient(circle at 90% 80%, #e8ddff 0, transparent 30%),
+                linear-gradient(135deg, #fff7f2, #f8edff);
+        }
+
+        /* ---------------------------------
+           2. Page layout
+        ---------------------------------- */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding: 28px 18px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .page.active {
+            display: flex;
+            animation: appear 0.7s ease both;
+        }
+
+        .card {
+            position: relative;
+            overflow: hidden;
+            width: min(720px, 100%);
+            padding: clamp(28px, 6vw, 58px);
+            border: 1px solid #ffffffc9;
+            border-radius: 30px;
+            background: #ffffffb8;
+            box-shadow: 0 20px 70px #76517b20;
+            backdrop-filter: blur(12px);
+        }
+
+        /* ---------------------------------
+           3. Text styles
+        ---------------------------------- */
+        .eyebrow {
+            color: #b36b91;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .emoji {
+            margin: 14px 0;
+            font-size: 3.4rem;
+        }
+
+        h1,
+        h2 {
+            margin: 12px 0;
+            color: #51334f;
+            font-family: "Playfair Display", serif;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 4.8rem);
+            line-height: 1.08;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 6vw, 3.3rem);
+        }
+
+        p {
+            color: #725f73;
+            font-size: 1.04rem;
+            line-height: 1.8;
+        }
+
+        .script {
+            color: #a34d78;
+            font-family: "Playfair Display", serif;
+            font-style: italic;
+        }
+
+        .shayari {
+            max-width: 590px;
+            margin: 25px auto;
+            color: #63465f;
+            font-family: "Playfair Display", serif;
+            font-size: clamp(1.15rem, 3vw, 1.55rem);
+            line-height: 1.9;
+        }
+
+        .shayari span {
+            color: #d84e88;
+            font-weight: 700;
+        }
+
+        .divider {
+            margin: 18px;
+            color: #e58ab0;
+            letter-spacing: 8px;
+        }
+
+        .tiny {
+            color: #9b8298;
+            font-size: 0.88rem;
+        }
+
+        /* ---------------------------------
+           4. Buttons
+        ---------------------------------- */
+        .btn {
+            margin: 12px 6px;
+            padding: 14px 27px;
+            border: 0;
+            border-radius: 999px;
+            color: white;
+            background: linear-gradient(135deg, #ff7da8, #d76bb2);
+            box-shadow: 0 9px 22px #e77eaa45;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 13px 25px #e77eaa66;
+        }
+
+        .btn.soft {
+            border: 1px solid #f2c5d8;
+            color: #a44d7b;
+            background: #fff;
+            box-shadow: none;
+        }
+
+        /* ---------------------------------
+           5. Friendship memories section
+        ---------------------------------- */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .memory {
+            padding: 20px 10px;
+            border-radius: 18px;
+            color: #86516f;
+            background: #fff0f6;
+        }
+
+        .memory b {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.8rem;
+        }
+
+        /* ---------------------------------
+           6. Floating hearts animation
+        ---------------------------------- */
+        .heart {
+            position: fixed;
+            z-index: 5;
+            bottom: -30px;
+            color: #ef7fa8;
+            pointer-events: none;
+            animation: float 6s linear forwards;
+        }
+
+        @keyframes float {
+            to {
+                opacity: 0;
+                transform: translateY(-110vh) rotate(25deg);
+            }
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ---------------------------------
+           7. Mobile responsive styles
+        ---------------------------------- */
+        @media (max-width: 520px) {
+            .memory-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                border-radius: 23px;
+            }
+
+            .page {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- PAGE 1: Welcome screen -->
+    <section class="page active" id="welcome">
+        <div class="card">
+            <div class="eyebrow">A little story written just for you</div>
+            <div class="emoji">🎀💗🎂</div>
+
+            <h1>For The <span class="script">Birthday Queen!</span></h1>
+
+            <p>
+                Some people enter our lives randomly… and somehow become a
+                very special part of it.
+            </p>
+
+            <p class="script">This little surprise is all about our dosti.</p>
+
+            <button class="btn" onclick="showPage('letter')">
+                Open your surprise 💌
+            </button>
+
+            <div class="tiny">Made with lots of pyaar ♡</div>
+        </div>
+    </section>
+
+    <!-- PAGE 2: Friendship shayari -->
+    <section class="page" id="letter">
+        <div class="card">
+            <div class="eyebrow">A few words from my heart</div>
+            <div class="emoji">🫶</div>
+
+            <h2>Our kind of <span class="script">Dosti</span></h2>
+            <div class="divider">♡ ───── ♡</div>
+
+            <div class="shayari">
+                Na khoon ka rishta, na koi pehchaan thi,<br />
+                Phir bhi tu meri zindagi ka ek haseen armaan thi,<br />
+                Dosti toh bas yun hi ho gayi tujhse,<br />
+                Warna har kisi se kahan itni
+                <span>jaan-pehchaan</span> thi! ❤️
+            </div>
+
+            <p>Some bonds don't need a reason. They just feel like home.</p>
+
+            <button class="btn" onclick="showPage('memories')">
+                A little more… ✨
+            </button>
+        </div>
+    </section>
+
+    <!-- PAGE 3: Friendship memories -->
+    <section class="page" id="memories">
+        <div class="card">
+            <div class="eyebrow">The best part of friendship</div>
+            <div class="emoji">🌷</div>
+
+            <h2>Little things, <span class="script">big memories</span></h2>
+
+            <div class="memory-grid">
+                <div class="memory">
+                    <b>😂</b>
+                    Endless laughter
+                </div>
+
+                <div class="memory">
+                    <b>🤫</b>
+                    Secret conversations
+                </div>
+
+                <div class="memory">
+                    <b>💞</b>
+                    Always being there
+                </div>
+            </div>
+
+            <p>
+                May we keep collecting silly stories, laughing at random
+                things, and making memories worth remembering.
+            </p>
+
+            <button class="btn" onclick="showPage('wish')">
+                Your birthday wish 🎁
+            </button>
+        </div>
+    </section>
+
+    <!-- PAGE 4: Birthday wishes -->
+    <section class="page" id="wish">
+        <div class="card">
+            <div class="eyebrow">Today is all about you</div>
+            <div class="emoji">💌💝🌹</div>
+
+            <h1>Happiestttt Birthdayyy darling!🎀</h1>
+            <h2 class="script">Stay happy. Stay blessed.</h2>
+
+            <p>
+                I hope your day is as lovely and special as you are. May this year bring you lots of happiness, cute little moments, endless smiles, and everything your heart wishes for. Stay happy, keep smiling, and never stop being your adorable self! 🥹🤌
+            </p>
+
+            <div class="divider">♡ ♡ ♡</div>
+            <p class="script">Good friends. Great memories. Forever.</p>
+
+            <button class="btn" onclick="celebrate()">
+                Celebrate! 🎉
+            </button>
+
+            <button class="btn soft" onclick="showPage('welcome')">
+                Read it again ↺
+            </button>
+
+            <div class="tiny" id="finalNote">
+                A friendship note, made with love just for you.
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 5: A Birthday message -->
+    <section>
+        <div></div>
+    </section>
+
+    <script>
+        // ---------------------------------
+        // 1. Switch between website pages
+        // ---------------------------------
+        function showPage(pageId) {
+            const pages = document.querySelectorAll(".page");
+
+            pages.forEach(function (page) {
+                page.classList.remove("active");
+            });
+
+            document.getElementById(pageId).classList.add("active");
+            window.scrollTo({ 
+                top: 0,
+                behavior: "smooth" 
+            });
+        }
+
+        // ---------------------------------
+        // 2. Create one floating heart
+        // ---------------------------------
+        function makeHeart() {
+            const heart = document.createElement("div");
+            const heartSymbols = ["♡", "♥", "💕", "💗"];
+
+            heart.className = "heart";
+            heart.textContent = heartSymbols[
+                Math.floor(Math.random() * heartSymbols.length)
+            ];
+
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.fontSize = 16 + Math.random() * 22 + "px";
+            heart.style.animationDuration = 4 + Math.random() * 3 + "s";
+
+            document.body.appendChild(heart);
+
+            // Remove the heart after its animation finishes.
+            setTimeout(function () {
+                heart.remove();
+            }, 7000);
+        }
+
+        // Create a new floating heart every 650 milliseconds.
+        setInterval(makeHeart, 650);
+
+        // ---------------------------------
+        // 3. Birthday celebration button
+        // ---------------------------------
+        function celebrate() {
+            // Create a burst of floating hearts and sparkles.
+            for (let i = 0; i < 45; i++) {
+                setTimeout(makeHeart, i * 35);
+            }
+
+            // Update the birthday message below the buttons.
+            document.getElementById("finalNote").textContent =
+                "Sending you a sky full of wishes! 💗";
+        }
+    </script>
+</body>
+</html>
